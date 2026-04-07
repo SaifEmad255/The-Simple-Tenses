@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bel-Engleezi | Tenses Mastery Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body { 
+            margin: 0; 
+            padding: 0;
+            font-family: 'Montserrat', 'Cairo', sans-serif; 
+            color: #fff; 
+            background: linear-gradient(135deg, #0f1b3c 0%, #1a2850 50%, #0f1b3c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Female Vibrant Colors */
+        body.female-under20, body.female-over20 {
+            background: linear-gradient(-45deg, #ff1493, #ff69b4, #ff87ce, #ffb6d9, #ffc0cb) !important;
+            background-size: 400% 400%;
+            background-attachment: fixed !important;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Male Vibrant Colors */
+        body.male-under20, body.male-over20 {
+            background: linear-gradient(-45deg, #1e90ff, #00bfff, #00ced1, #20b2aa, #87ceeb) !important;
+            background-size: 400% 400%;
+            background-attachment: fixed !important;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            animation: float 25s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        .glass-panel { 
+            background: linear-gradient(135deg, rgba(15, 27, 60, 0.92), rgba(26, 40, 80, 0.88));
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(212, 175, 55, 0.2), 0 0 30px rgba(212, 175, 55, 0.12);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        #quiz-area {
+            max-width: 700px;
+            margin: auto;
+            padding: 0 16px;
+        }
+
+        .opt-btn { 
+            transition: all 0.4s ease;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            cursor: pointer; 
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.04));
+            padding: 15px 20px;
+            margin: 8px 0;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 12px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .opt-btn:hover:not(:disabled) { 
+            transform: scale(1.03) translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.8);
+            background: rgba(212, 175, 55, 0.15);
+        }
+        
+        .opt-correct { background: #10b981 !important; border-color: #059669 !important; }
+        .opt-wrong { background: #ef4444 !important; border-color: #b91c1c !important; }
+
+        select, input {
+            width: 100% !important;
+            background-color: rgba(212, 175, 55, 0.1) !important;
+            color: #d4af37 !important;
+            border: 2px solid rgba(212, 175, 55, 0.3) !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+        }
+
+        .start-btn {
+            width: 100%;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #d4af37, #e5c158);
+            color: #0f1b3c;
+            font-weight: 900;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #exp-box {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="particle-bg" id="particle-container"></div>
+
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-black/20 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full border-2 border-yellow-600 overflow-hidden">
+                <img src="https://ui-avatars.com/api/?name=BE&background=d4af37&color=0f1b3c" alt="Logo">
+            </div>
+            <div>
+                <h1 class="text-xl font-black uppercase">Bel-Engleezi</h1>
+                <p class="text-yellow-600 text-xs font-bold uppercase">Elite Tenses Mastery</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex items-center justify-center min-h-[80vh] p-4">
+        <div id="start-screen" class="glass-panel w-full max-w-md">
+            <h2 class="text-3xl font-black text-center mb-6 text-yellow-500">Academic Entry</h2>
+            <div class="space-y-4" dir="rtl">
+                <input type="text" id="u-name" placeholder="الاسم بالكامل">
+                <select id="u-gender">
+                    <option value="">اختر النوع</option>
+                    <option value="Male">ذكر</option>
+                    <option value="Female">أنثى</option>
+                </select>
+                <select id="u-age">
+                    <option value="">المرحلة العمرية</option>
+                    <option value="Under 20">أقل من 20 سنة</option>
+                    <option value="Over 20">أكبر من 20 سنة</option>
+                </select>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">ابدأ الاختبار الأكاديمي 🚀</button>
+        </div>
+
+        <div id="quiz-area" class="hidden w-full">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="flex-grow h-2 bg-black/40 rounded-full">
+                    <div id="prog-bar" class="h-full bg-yellow-500 w-0 transition-all duration-500"></div>
+                </div>
+                <span id="q-num" class="font-bold text-yellow-500">01/30</span>
+            </div>
+
+            <div class="glass-panel">
+                <h2 id="q-text" class="text-xl font-bold mb-6 text-center"></h2>
+                <div id="options-box"></div>
+                <div id="exp-box" class="hidden"></div>
+                <button id="btn-next" class="hidden start-btn mt-4" onclick="nextQuestion()">السؤال التالي ⮕</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const QUESTIONS = [
+            // Present Simple (1-10)
+            { q: "Water __________ at 100 degrees Celsius.", a: ["boil", "boils", "boiling", "is boil"], c: 1, exp: "حقيقة علمية ثابتة، نستخدم المضارع البسيط مع إضافة (s) للمفرد (Water)." },
+            { q: "How often __________ you go to the gym?", a: ["does", "do", "are", "is"], c: 1, exp: "في السؤال نستخدم Do مع الضمير You في المضارع البسيط." },
+            { q: "The train to London __________ at 6 PM tomorrow.", a: ["leaves", "leave", "will leaving", "is leave"], c: 0, exp: "للجداول الزمنية الثابتة (Timetables) نستخدم المضارع البسيط حتى لو الكلام عن بكرة." },
+            { q: "She __________ like coffee; she prefers tea.", a: ["don't", "isn't", "doesn't", "not"], c: 2, exp: "نفي المفرد (She) في المضارع البسيط يكون بـ doesn't + المصدر." },
+            { q: "My father __________ in a big hospital.", a: ["work", "working", "works", "is work"], c: 2, exp: "حقيقة عن وظيفة ثابتة، نستخدم المضارع البسيط مع (s) للمفرد." },
+            { q: "__________ your brother play football every Friday?", a: ["Do", "Is", "Does", "Are"], c: 2, exp: "للسؤال عن مفرد (your brother) نستخدم Does." },
+            { q: "I always __________ my teeth before bed.", a: ["brush", "brushes", "brushing", "brushed"], c: 0, exp: "مع الضمير (I) في العادات نستخدم الفعل بدون إضافات." },
+            { q: "They __________ usually late for meetings.", a: ["do", "are", "is", "does"], c: 1, exp: "مع أفعال الحالة (Being) نستخدم are مع الجمع في المضارع." },
+            { q: "The earth __________ around the sun.", a: ["go", "going", "goes", "gone"], c: 2, exp: "حقيقة كونية ثابتة، مفرد + s." },
+            { q: "Why __________ he always complain about everything?", a: ["do", "is", "does", "doing"], c: 2, exp: "سؤال عن عادة في المضارع للمفرد نستخدم Does." },
+
+            // Past Simple (11-20)
+            { q: "I __________ my old friend at the mall yesterday.", a: ["meet", "met", "meeting", "meets"], c: 1, exp: "كلمة Yesterday تدل على الماضي البسيط، والتصريف الثاني لـ meet هو met." },
+            { q: "They __________ not arrive on time last night.", a: ["did", "do", "were", "was"], c: 0, exp: "نفي الماضي البسيط باستخدام did not (didn't)." },
+            { q: "Where __________ you go for your last vacation?", a: ["do", "did", "were", "have"], c: 1, exp: "السؤال في الماضي عن 'Last vacation' نستخدم فيه Did." },
+            { q: "He __________ a famous doctor ten years ago.", a: ["is", "were", "was", "be"], c: 2, exp: "الماضي من is للمفرد هو was." },
+            { q: "Shakespeare __________ many famous plays.", a: ["write", "wrote", "written", "writes"], c: 1, exp: "حدث بدأ وانتهى في الماضي (شخص متوفى)، نستخدم التصريف الثاني wrote." },
+            { q: "We __________ the movie, it was too boring.", a: ["didn't liked", "don't like", "didn't like", "wasn't like"], c: 2, exp: "بعد didn't لازم الفعل يرجع للمصدر (like) بدون ed." },
+            { q: "When I was young, I __________ every day.", a: ["swim", "swam", "swimming", "swims"], c: 1, exp: "عادة في الماضي انتهت، نستخدم التصريف الثاني swam." },
+            { q: "Did you __________ the email I sent?", a: ["received", "receive", "receiving", "receives"], c: 1, exp: "وجود Did في السؤال يخلينا نختار المصدر بدون إضافات." },
+            { q: "The company __________ its first branch in 1990.", a: ["open", "opened", "opens", "opening"], c: 1, exp: "تاريخ قديم (1990) يعني ماضي بسيط منتظم ينتهي بـ ed." },
+            { q: "I __________ tired, so I went to bed early.", a: ["feel", "felt", "was feel", "feeling"], c: 1, exp: "سرد أحداث في الماضي، التصريف الثاني لـ feel هو felt." },
+
+            // Future Simple (21-30)
+            { q: "I'm hungry. I think I __________ a sandwich.", a: ["will make", "make", "made", "going to make"], c: 0, exp: "قرار سريع (Quick Decision) نستخدم فيه Will." },
+            { q: "Scientists believe it __________ rain more in the future.", a: ["rains", "will rain", "rained", "is rain"], c: 1, exp: "تنبؤ بدون دليل قوي (Prediction) نستخدم فيه Will." },
+            { q: "I promise I __________ tell anyone your secret.", a: ["won't", "don't", "didn't", "am not"], c: 0, exp: "الوعود (Promises) نستخدم فيها will أو won't للنفي." },
+            { q: "__________ you help me with this heavy bag?", a: ["Do", "Did", "Will", "Are"], c: 2, exp: "لطلب المساعدة (Request) نستخدم Will." },
+            { q: "Next year, she __________ 25 years old.", a: ["will be", "is", "was", "will being"], c: 0, exp: "حقائق مستقبلية (Future Facts) زي العمر نستخدم فيها Will be." },
+            { q: "I __________ call you as soon as I arrive.", a: ["will", "do", "am", "was"], c: 0, exp: "قرار أو وعد للمستقبل." },
+            { q: "Wait! I __________ with you to the station.", a: ["will go", "go", "going", "went"], c: 0, exp: "قرار لحظي اتُخذ الآن." },
+            { q: "The robots __________ take over all jobs soon.", a: ["won't", "don't", "aren't", "wasn't"], c: 0, exp: "توقع مستقبلي منفي." },
+            { q: "__________ the weather be better tomorrow?", a: ["Is", "Will", "Does", "Did"], c: 1, exp: "سؤال عن حالة الطقس في المستقبل." },
+            { q: "I hope you __________ a great time at the party.", a: ["have", "will have", "had", "having"], c: 1, exp: "بعد أفعال التمني (Hope/Think) غالباً بنستخدم Will." }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function startQuiz() {
+            const name = document.getElementById('u-name').value;
+            const gender = document.getElementById('u-gender').value;
+            if(!name || !gender) return alert("من فضلك كمل بياناتك يا بطل!");
+            
+            document.body.className = gender.toLowerCase() + '-' + document.getElementById('u-age').value.toLowerCase().replace(' ', '');
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-area').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = QUESTIONS[currentQ];
+            document.getElementById('q-num').innerText = `${(currentQ+1).toString().padStart(2,'0')}/30`;
+            document.getElementById('prog-bar').style.width = `${((currentQ+1)/30)*100}%`;
+            document.getElementById('q-text').innerText = q.q;
+            
+            const box = document.getElementById('options-box');
+            box.innerHTML = '';
+            document.getElementById('exp-box').classList.add('hidden');
+            document.getElementById('btn-next').classList.add('hidden');
+
+            q.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(idx);
+                box.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(idx) {
+            const q = QUESTIONS[currentQ];
+            const btns = document.querySelectorAll('.opt-btn');
+            
+            btns.forEach(b => b.disabled = true);
+            
+            if(idx === q.c) {
+                btns[idx].classList.add('opt-correct');
+                score++;
+            } else {
+                btns[idx].classList.add('opt-wrong');
+                btns[q.c].classList.add('opt-correct');
+            }
+
+            const exp = document.getElementById('exp-box');
+            exp.innerHTML = `<strong>💡 التفسير الأكاديمي:</strong><br>${q.exp}`;
+            exp.classList.remove('hidden');
+            document.getElementById('btn-next').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if(currentQ < QUESTIONS.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const name = document.getElementById('u-name').value;
+            document.getElementById('quiz-area').innerHTML = `
+                <div class="glass-panel text-center">
+                    <h2 class="text-4xl font-black mb-4">Amazing Work!</h2>
+                    <p class="text-xl mb-6">يا ${name}، درجتك النهائية هي:</p>
+                    <div class="text-6xl font-black text-yellow-500 mb-6">${score} / 30</div>
+                    <p class="text-gray-300">أنت الآن جاهز للمستوى التالي في Bel-Engleezi!</p>
+                    <button class="start-btn mt-6" onclick="location.reload()">إعادة الاختبار 🔄</button>
+                </div>
+            `;
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 20 + 's';
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+    </script>
+</body>
+</html>
