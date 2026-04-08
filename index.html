@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bel-Engleezi | Simple Tenses Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body { 
+            margin: 0; padding: 0;
+            font-family: 'Montserrat', 'Cairo', sans-serif; 
+            color: #fff; 
+            background: linear-gradient(135deg, #0f1b3c 0%, #1a2850 50%, #0f1b3c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 1s ease;
+        }
+
+        /* Female Vibrant Colors */
+        body.theme-female {
+            background: linear-gradient(-45deg, #ff1493, #ff69b4, #9b59b6, #ffb6d9, #ffc0cb) !important;
+            background-size: 400% 400%;
+            background-attachment: fixed !important;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Male Vibrant Colors */
+        body.theme-male {
+            background: linear-gradient(-45deg, #1e90ff, #0f1b3c, #00ced1, #20b2aa, #1a2850) !important;
+            background-size: 400% 400%;
+            background-attachment: fixed !important;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .particle-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; width: 3px; height: 3px; background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            animation: float 25s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        .glass-panel { 
+            background: linear-gradient(135deg, rgba(15, 27, 60, 0.92), rgba(26, 40, 80, 0.88));
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(212, 175, 55, 0.2), 0 0 30px rgba(212, 175, 55, 0.12);
+            border-radius: 20px; position: relative; overflow: hidden; padding: 40px;
+        }
+
+        @keyframes slideInForm {
+            from { opacity: 0; transform: translateY(-60px) scale(0.85); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+        #start-screen, #result-screen { animation: slideInForm 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; max-width: 450px; margin: auto; }
+
+        @keyframes slideInQuiz {
+            from { opacity: 0; transform: translateY(40px) scale(0.95) rotateX(-20deg); }
+            to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+        }
+        #quiz-area { animation: slideInQuiz 1s cubic-bezier(0.34, 1.56, 0.64, 1); max-width: 600px; margin: auto; padding: 0 16px; }
+
+        select, input {
+            width: 100% !important; background-color: rgba(212, 175, 55, 0.1) !important;
+            color: #d4af37 !important; font-weight: 600 !important;
+            border: 2px solid rgba(212, 175, 55, 0.3) !important;
+            border-radius: 8px !important; padding: 12px !important; outline: none !important;
+        }
+        select option { background: #1a2850; color: #d4af37; }
+        input::placeholder { color: rgba(212, 175, 55, 0.6) !important; }
+        select:focus, input:focus { border-color: rgba(212, 175, 55, 0.6) !important; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3) !important; }
+
+        .start-btn {
+            width: 100%; margin-top: 40px; background: linear-gradient(135deg, #d4af37, #e5c158);
+            color: #0f1b3c; font-weight: 900; font-size: 1.125rem; padding: 16px 32px;
+            border-radius: 8px; border: none; cursor: pointer; transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+        .start-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6); }
+
+        .opt-btn { 
+            transition: all 0.4s ease; border: 2px solid rgba(212, 175, 55, 0.4); cursor: pointer; 
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.04));
+            padding: 13px 16px; margin: 5px 0; color: #fff; font-weight: 600; border-radius: 12px;
+            text-align: left; width: 100%; animation: optionSlide 0.5s ease forwards;
+            font-size: 1.1rem;
+        }
+        @keyframes optionSlide { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        .opt-btn:hover:not(:disabled) { 
+            transform: scale(1.05) translateY(-2px); border-color: rgba(212, 175, 55, 0.8);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+        }
+        
+        .opt-correct { 
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.25), rgba(16, 185, 129, 0.15)) !important;
+            border-color: #10b981 !important; box-shadow: 0 0 25px rgba(52, 211, 153, 0.4) !important;
+        }
+        .opt-wrong { 
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.25), rgba(239, 68, 68, 0.15)) !important;
+            border-color: #ef4444 !important; box-shadow: 0 0 25px rgba(248, 113, 113, 0.4) !important;
+        }
+
+        #q-text { font-size: 1.35rem; line-height: 1.5; color: #d4af37; font-weight: 700; text-align: center; margin-bottom: 20px;}
+        
+        #exp-box {
+            margin-top: 14px; padding: 16px; font-size: 0.95rem; color: #fff; border-radius: 12px;
+            text-align: right; border: 2px solid rgba(212, 175, 55, 0.3); direction: rtl;
+        }
+
+        #btn-next {
+            margin-top: 16px; padding: 13px; font-size: 1.1rem; background: linear-gradient(135deg, #d4af37, #e5c158);
+            color: #0f1b3c; font-weight: 900; border: none; border-radius: 12px; cursor: pointer; width: 100%; transition: all 0.3s ease;
+        }
+        #btn-next:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5); }
+
+        header {
+            background: linear-gradient(135deg, rgba(15, 27, 60, 0.85), rgba(26, 40, 80, 0.85));
+            backdrop-filter: blur(20px); border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .countdown-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(10px);
+        }
+        .countdown-timer { font-size: 6.5rem; font-weight: 900; margin: 20px 0; color: #ffd700; animation: countdownPulse 1s infinite; }
+        @keyframes countdownPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div class="particle-bg" id="particle-container"></div>
+
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full border-2 border-yellow-600 overflow-hidden bg-gradient-to-br from-yellow-600 to-yellow-800">
+                <img src="logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=BE&background=d4af37&color=0f1b3c';">
+            </div>
+            <div>
+                <h1 class="text-xl font-black uppercase tracking-wider">Bel-Engleezi</h1>
+                <p class="text-yellow-600 text-xs font-bold uppercase tracking-widest">Simple Tenses Challenge</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="min-h-[85vh] flex items-center justify-center p-5">
+        <div id="start-screen" class="glass-panel w-full">
+            <h2 class="text-4xl font-black text-center mb-8 text-yellow-500">Student Entry</h2>
+            <div class="space-y-5" dir="rtl">
+                <div>
+                    <label class="block font-bold mb-2 text-yellow-500">الاسم بالكامل</label>
+                    <input type="text" id="u-name" placeholder="أدخل اسمك يا بطل">
+                </div>
+                <div>
+                    <label class="block font-bold mb-2 text-yellow-500">النوع</label>
+                    <select id="u-gender">
+                        <option value="">اختر النوع</option>
+                        <option value="Male">ذكر</option>
+                        <option value="Female">أنثى</option>
+                    </select>
+                </div>
+            </div>
+            <button class="start-btn" type="button" onclick="startChallenge()">ابدأ التحدي 🚀</button>
+        </div>
+
+        <div id="quiz-area" class="hidden w-full">
+            <div class="flex items-center gap-3 mb-6 glass-panel p-3 rounded-xl">
+                <div class="flex-grow h-3 bg-black/40 rounded-full overflow-hidden border border-yellow-600/30">
+                    <div id="prog-bar" class="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 w-0 transition-all duration-500"></div>
+                </div>
+                <span id="q-num" class="font-black text-yellow-400 text-sm">01/20</span>
+            </div>
+
+            <div class="glass-panel rounded-xl">
+                <h2 id="q-text"></h2>
+                <div id="options-box" class="flex flex-col gap-2"></div>
+                <div id="exp-box" class="hidden"></div>
+                <button id="btn-next" type="button" class="hidden" onclick="nextQuestion()">السؤال التالي ⮕</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden glass-panel w-full text-center">
+            <h2 class="text-4xl font-black mb-4 text-yellow-500">Great Job! 🏆</h2>
+            <p id="final-score" class="text-6xl font-bold text-white mb-6">0/20</p>
+            <p id="final-msg" class="text-lg text-gray-300 mb-8 dir-rtl"></p>
+            <button class="start-btn" onclick="location.reload()">العب مرة تانية 🔄</button>
+        </div>
+    </main>
+
+    <div id="countdown-overlay" class="hidden countdown-overlay">
+        <div class="text-center">
+            <div class="text-3xl font-black mb-4 text-yellow-400">خذ نفس عميق وركز</div>
+            <div class="countdown-timer" id="countdown-number">3</div>
+            <div class="text-2xl text-yellow-300 font-bold">استعد للعبة 🎮</div>
+        </div>
+    </div>
+
+    <script>
+        // Particles Effect
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            for (let i = 0; i < 60; i++) {
+                let p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%'; p.style.top = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 20 + 's'; p.style.animationDuration = (15 + Math.random() * 20) + 's';
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+
+        // Sound Effects Engine
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let actx;
+        function snd(t) {
+            try {
+                if(!actx) actx = new AudioContext();
+                const o = actx.createOscillator(), g = actx.createGain();
+                o.connect(g); g.connect(actx.destination);
+                let n = actx.currentTime;
+                if(t==='ok'){ o.frequency.setValueAtTime(600,n); o.frequency.setValueAtTime(900,n+0.1); g.gain.setValueAtTime(0.1,n); o.start(n); o.stop(n+0.2); }
+                if(t==='err'){ o.frequency.setValueAtTime(250,n); g.gain.setValueAtTime(0.1,n); o.start(n); o.stop(n+0.3); }
+            } catch(e){}
+        }
+
+        // 20 Simple Tenses Questions (Present Simple, Past Simple, Future Simple)
+        const questions = [
+            { q: "Water __________ at 100 degrees Celsius.", a: ["boil", "boils", "boiled", "will boil"], c: 1, exp: "💡 المضارع البسيط (Present Simple) بنستخدمه مع الحقائق العلمية الثابتة. ولأن Water مفرد بنضيف 's' للفعل." },
+            { q: "I __________ to Paris for my holiday last year.", a: ["go", "goes", "went", "will go"], c: 2, exp: "💡 كلمة 'last year' بتدل على الماضي، والماضي من go هو كلمة 'went' (Past Simple)." },
+            { q: "Look at those dark clouds! It __________ rain.", a: ["rains", "rained", "is going to", "will"], c: 2, exp: "💡 لما يكون فيه دليل قدامنا (سحب سوداء)، بنستخدم 'is going to' للتعبير عن المستقبل مش 'will'." },
+            { q: "He usually __________ coffee in the morning.", a: ["drink", "drinks", "drank", "will drink"], c: 1, exp: "💡 كلمة 'usually' بتعبر عن عادة (Habit)، يبقى مضارع بسيط. ومع He بنحط 's'." },
+            { q: "They __________ pizza for dinner yesterday.", a: ["eat", "eats", "ate", "will eat"], c: 2, exp: "💡 كلمة 'yesterday' ماضي بسيط. الفعل eat فعل شاذ (Irregular) والماضي بتاعه ate." },
+            { q: "I promise I __________ your secret to anyone.", a: ["don't tell", "didn't tell", "won't tell", "am not telling"], c: 2, exp: "💡 مع الوعود (Promises) بنستخدم المستقبل البسيط باستخدام will. والنفي بتاعها won't." },
+            { q: "__________ she like playing tennis?", a: ["Do", "Does", "Did", "Will"], c: 1, exp: "💡 في المضارع البسيط بنسأل بـ Does مع (He/She/It)." },
+            { q: "We __________ see the movie last night because we were tired.", a: ["don't", "doesn't", "didn't", "won't"], c: 2, exp: "💡 عشان ننفي في الماضي البسيط (last night) بنستخدم didn't وبعدها الفعل في المصدر." },
+            { q: "The train __________ at 8:00 PM tonight.", a: ["leave", "leaves", "left", "will leave"], c: 1, exp: "💡 مواعيد القطارات والطيارات (الجداول الثابتة) بنستخدم معاها المضارع البسيط حتى لو لسه هتحصل." },
+            { q: "A: The phone is ringing! \nB: I __________ answer it.", a: ["answer", "answers", "answered", "will answer"], c: 3, exp: "💡 القرارات السريعة (Quick Decisions) لحظة الكلام بنستخدم معاها 'will'." },
+            { q: "My brother __________ a new car two weeks ago.", a: ["buy", "buys", "bought", "will buy"], c: 2, exp: "💡 كلمة 'ago' من علامات الماضي البسيط، والماضي من buy هو bought." },
+            { q: "__________ you finish your homework yesterday?", a: ["Do", "Does", "Did", "Will"], c: 2, exp: "💡 في الماضي البسيط بنسأل باستخدام 'Did' وبنرجع الفعل للمصدر." },
+            { q: "I think people __________ on Mars in the future.", a: ["live", "lives", "lived", "will live"], c: 3, exp: "💡 التنبؤات في المستقبل بدون دليل قوي (مع I think) بنستخدم معاها will." },
+            { q: "She __________ English very well.", a: ["speak", "speaks", "spoke", "will speak"], c: 1, exp: "💡 دي حقيقة أو حالة ثابتة (Present Simple)، وعشان She بنضيف 's' للفعل." },
+            { q: "When I was a child, I __________ chocolate every day.", a: ["eat", "eats", "ate", "will eat"], c: 2, exp: "💡 'When I was a child' بتعبر عن عادة في الماضي وانتهت، فبنستخدم الماضي البسيط." },
+            { q: "If you study hard, you __________ the exam.", a: ["pass", "passes", "passed", "will pass"], c: 3, exp: "💡 الحالة الأولى من قاعدة If: المضارع البسيط بييجي معاه مستقبل بـ will." },
+            { q: "The Earth __________ around the Sun.", a: ["go", "goes", "went", "will go"], c: 1, exp: "💡 حقيقة علمية بحتة، إذن نستخدم المضارع البسيط." },
+            { q: "I __________ happy to see you yesterday.", a: ["am", "is", "was", "were"], c: 2, exp: "💡 في الماضي، فعل 'يكون' مع (I/He/She/It) بيبقى 'was'." },
+            { q: "Next year, I __________ 25 years old.", a: ["am", "was", "will be", "be"], c: 2, exp: "💡 الحقائق المستقبلية (زي العمر) بنستخدم معاها will be." },
+            { q: "They __________ to the beach every summer.", a: ["travel", "travels", "traveled", "will travel"], c: 0, exp: "💡 'Every summer' بتعبر عن عادة متكررة. إذن مضارع بسيط، ومع They مش بنضيف 's'." }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function startChallenge() {
+            const name = document.getElementById('u-name').value;
+            const gender = document.getElementById('u-gender').value;
+
+            if(!name || !gender) {
+                alert("Please enter your name and choose a gender! 😎");
+                return;
+            }
+
+            // Apply Theme based on gender
+            document.body.className = gender === 'Female' ? 'theme-female' : 'theme-male';
+
+            document.getElementById('start-screen').classList.add('hidden');
+            const overlay = document.getElementById('countdown-overlay');
+            overlay.classList.remove('hidden');
+
+            // Play Init Sound
+            if(actx && actx.state === 'suspended') actx.resume();
+
+            let count = 3;
+            const timer = setInterval(() => {
+                count--;
+                if(count > 0) {
+                    document.getElementById('countdown-number').innerText = count;
+                } else {
+                    clearInterval(timer);
+                    overlay.classList.add('hidden');
+                    document.getElementById('quiz-area').classList.remove('hidden');
+                    loadQuestion();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('q-num').innerText = `${currentQ + 1}/${questions.length}`;
+            document.getElementById('prog-bar').style.width = `${((currentQ + 1) / questions.length) * 100}%`;
+            
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('exp-box').classList.add('hidden');
+            document.getElementById('btn-next').classList.add('hidden');
+
+            const optionsBox = document.getElementById('options-box');
+            optionsBox.innerHTML = '';
+
+            q.a.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const q = questions[currentQ];
+            const buttons = document.querySelectorAll('.opt-btn');
+            
+            buttons.forEach(btn => btn.disabled = true); // Disable all after click
+
+            if (selectedIndex === q.c) {
+                btnElement.classList.add('opt-correct');
+                snd('ok');
+                score++;
+            } else {
+                btnElement.classList.add('opt-wrong');
+                buttons[q.c].classList.add('opt-correct');
+                snd('err');
+            }
+
+            const expBox = document.getElementById('exp-box');
+            expBox.innerHTML = q.exp;
+            expBox.classList.remove('hidden');
+            document.getElementById('btn-next').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-area').classList.add('hidden');
+            const resScreen = document.getElementById('result-screen');
+            resScreen.classList.remove('hidden');
+            
+            document.getElementById('final-score').innerText = `${score} / 20`;
+            
+            let msg = "";
+            if(score === 20) msg = "أنت أسطورة! مفيش ولا غلطة 🤩🔥";
+            else if(score >= 15) msg = "عاش جداً يا بطل! مستواك ممتاز 👏😎";
+            else if(score >= 10) msg = "بداية موفقة، بس محتاجين نركز شوية كمان 💪";
+            else msg = "ولا يهمك، احنا هنا عشان نتعلم ونغلط براحتنا، المحاضرة الجاية هتكسر الدنيا! 🚀";
+
+            document.getElementById('final-msg').innerText = msg;
+        }
+    </script>
+</body>
+</html>
